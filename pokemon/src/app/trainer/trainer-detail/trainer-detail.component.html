@@ -1,8 +1,52 @@
-<div class="trainer-detail">
-  <h2>{{ trainerDetail.name }}</h2>
-  <img [src]="trainerDetail.imageUrl" [alt]="trainerDetail.name" />
-  <p><strong>Age:</strong> {{ trainerDetail.age }}</p>
-  <p><strong>About...</strong> {{ trainerDetail.bigSnopsies }}</p>
-  <p><strong>Pokemons:</strong></p>
-  <app-pokemon-list [pokemonList]="trainerDetail.pokemons"></app-pokemon-list>
+<div class="container">
+  <h1 class="my-4 text-center">Detalle de Entrenador</h1>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="trainer">
+    <div class="card mb-4 shadow-sm">
+      <div class="row g-0">
+        <div class="col-md-4 text-center">
+          <img
+            [src]="trainer.imageUrl"
+            class="img-fluid rounded-start"
+            [alt]="trainer.name"
+            style="height: 250px; object-fit: cover;"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ trainer.name }}</h5>
+            <p><strong>Edad:</strong> {{ trainer.age }} años</p>
+            <p>{{ trainer.bigSnopsies }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2 class="my-4 text-center">Pokémons:</h2>
+    <div class="row">
+      <div *ngFor="let pokemon of trainer.pokemons" class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img
+            [src]="pokemon.imageUrl"
+            class="card-img-top"
+            [alt]="pokemon.name"
+            style="height: 200px; object-fit: cover;"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ pokemon.name }}</h5>
+            <p><strong>Tipo:</strong> {{ pokemon.type }}</p>
+            <p><strong>Nivel:</strong> {{ pokemon.level }}</p>
+            <p><strong>Habilidades:</strong></p>
+            <ul>
+              <li *ngFor="let ability of pokemon.abilities">{{ ability }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button routerLink="/trainers" class="btn btn-secondary mt-4">
+      Volver a la Lista
+    </button>
+  </div>
 </div>

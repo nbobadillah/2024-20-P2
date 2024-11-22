@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { TrainerService } from '../trainer.service';
 import { Trainer } from '../Trainer';
 
 @Component({
@@ -7,8 +9,27 @@ import { Trainer } from '../Trainer';
   styleUrls: ['./trainer-detail.component.css'],
 })
 export class TrainerDetailComponent implements OnInit {
-  @Input() trainerDetail!: Trainer;
-  constructor() {}
+  trainer: Trainer | null = null;
+  errorMessage: string = '';
 
-  ngOnInit() {}
+  constructor(
+    private route: ActivatedRoute,
+    private trainerService: TrainerService
+  ) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id'); // Obtiene el ID desde la URL 
+    console.log('ID del entrenador:', id);
+    if (id) {
+      this.trainerService.getTrainerDetail(id).subscribe({
+        next: (data) => {
+          this.trainer = data; // Asigna los datos del entrenador
+        },
+        error: (err) => {
+          console.error('Error al cargar los detalles del entrenador:', err);
+          this.errorMessage = 'No se pudieron cargar los detalles del entrenador.';
+        },
+      });
+    }
+  }
 }

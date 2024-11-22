@@ -1,8 +1,6 @@
-tr:hover {
-    background-color: gold;
-    cursor: pointer;
-  }
-
-thead {
-  background-color: gold;
+.card-img-top {
+  height: 200px;
+  width: 100%; 
+  object-fit: cover; 
+  border-radius: 8px; 
 }

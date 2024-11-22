@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TrainerService } from '../trainer.service';
 import { Trainer } from '../Trainer';
-import { dataTrainers } from '../dataTrainers';
 
 @Component({
   selector: 'app-trainer-list',
@@ -8,21 +8,21 @@ import { dataTrainers } from '../dataTrainers';
   styleUrls: ['./trainer-list.component.css'],
 })
 export class TrainerListComponent implements OnInit {
-  trainers: Array<Trainer> = [];
-  selected: Boolean = false;
-  selectedTrainer!: Trainer;
-  constructor() {}
+  trainers: Trainer[] = [];
+  errorMessage: string = '';
 
-  getTraunersList(): Array<Trainer> {
-    return dataTrainers;
-  }
+  constructor(private trainerService: TrainerService) { }
 
-  ngOnInit() {
-    this.trainers = this.getTraunersList();
-  }
+  ngOnInit(): void {
 
-  onSelected(trainer: Trainer) {
-    this.selected = true;
-    this.selectedTrainer = trainer;
+    this.trainerService.getTrainers().subscribe({
+      next: (data: Trainer[]) => {
+        this.trainers = data; 
+      },
+      error: (err: any) => {
+        console.error('Error al obtener los entrenadores:', err);
+        this.errorMessage = 'No se pudieron cargar los entrenadores.';
+      },
+    });
   }
 }
